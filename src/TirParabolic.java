@@ -1,5 +1,7 @@
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
+import processing.sound.SoundFile;
 
 public class TirParabolic extends PApplet {
 
@@ -17,6 +19,11 @@ public class TirParabolic extends PApplet {
     Target[] targets;
 
     int numShots = 0, numPoints = 0, numTargets = 0;
+
+    PFont font1, font2;
+
+    SoundFile soCano, soImpacte;
+
 
 
 
@@ -63,6 +70,11 @@ public class TirParabolic extends PApplet {
 
         setTargets(3, 9);
 
+        font1 = createFont("EvilEmpire.otf", 34);
+        font2 = createFont("Sono.ttf", 14);
+
+        soCano = new SoundFile(this, "explosio.wav");
+        soImpacte = new SoundFile(this, "impacte.wav");
 
 
     }
@@ -93,6 +105,8 @@ public class TirParabolic extends PApplet {
                 if(targets[i].estat != Target.ESTAT.EXPLOTAT && targets[i].esImpactatPer(this, p)){
                     targets[i].setEstat(Target.ESTAT.EXPLOTAT);
                     numPoints++;
+                    soImpacte.play();
+
                 }
             }
         }
@@ -130,6 +144,7 @@ public class TirParabolic extends PApplet {
         if (key == 's' || key=='S') {
             if(!disparat){
                 numShots++;
+                soCano.play();
             }
             disparat = true;
         }
@@ -140,6 +155,7 @@ public class TirParabolic extends PApplet {
             setTargets(3, 12);
 
             p = new Projectil(100, height/2, 50);
+            p.setImatgeCano(this);
             float a = map(mouseY, this.h-100, this.h+100, 0, -PI);
             p.setProperties(a, f, h);
         }
@@ -147,6 +163,7 @@ public class TirParabolic extends PApplet {
 
     void displayInfo(){
         fill(0); textAlign(LEFT); textSize(34);
+        textFont(font1);
         text("Tir Parabòlic", 50, 50);
 
         fill(0); textAlign(RIGHT);
@@ -158,6 +175,7 @@ public class TirParabolic extends PApplet {
         text("Shots: "+ numShots, width - 50, 120);
 
         fill(0); textSize(14); textAlign(LEFT);
+        textFont(font2);
         text("Press S key to shot your cannon.", 50, height-90);
         text("Use MOUSE to set your cannon direction.", 50, height-70);
         text("Press ARROW KEYS to set up your cannon.", 50, height-50);

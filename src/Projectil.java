@@ -13,6 +13,7 @@ public class Projectil {
 
     PImage imgCano;
 
+
     void setImatgeCano(PApplet p5){
         this.imgCano = p5.loadImage("cannon.png");
     }
